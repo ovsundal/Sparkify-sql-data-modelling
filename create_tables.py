@@ -21,6 +21,13 @@ except psycopg2.Error as e:
     print("Error: Issue dropping table 'fact_songplays'")
     print(e)
 
+try:
+    cur.execute("DROP TABLE IF EXISTS dim_users")
+except psycopg2.Error as e:
+    print("Error: Issue dropping table 'dim_users'")
+    print(e)
+
+
 # create tables
 try:
     cur.execute("CREATE TABLE IF NOT EXISTS fact_songplays "
@@ -34,6 +41,20 @@ try:
                 "session_id int NOT NULL,"
                 "location varchar(255),"
                 "user_agent varchar(255)"
+                ");"
+                "")
+except psycopg2.Error as e:
+    print("Error: Issue creating table")
+    print(e)
+
+try:
+    cur.execute("CREATE TABLE IF NOT EXISTS dim_users "
+                "("
+                "user_id int PRIMARY KEY,"
+                "first_name varchar(255) NOT NULL,"
+                "last_name varchar(255) NOT NULL,"
+                "gender char,"
+                "level int NOT NULL"
                 ");"
                 "")
 except psycopg2.Error as e:
