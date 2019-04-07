@@ -97,10 +97,10 @@ try:
     cur.execute("CREATE TABLE IF NOT EXISTS dim_artists "
                 "("
                 "artist_id int PRIMARY KEY,"
-                "name varchar(255),"
-                "location varchar(255),"
-                "latitude point,"
-                "longitude point"
+                "name varchar(255) NOT NULL,"
+                "location varchar(255) NOT NULL,"
+                "latitude point NOT NULL,"
+                "longitude point NOT NULL"
                 ");"
                 "")
 except psycopg2.Error as e:
