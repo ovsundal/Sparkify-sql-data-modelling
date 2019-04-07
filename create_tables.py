@@ -11,11 +11,13 @@ def create_database():
 
         # create a fresh instance of sparkify database with UTF-8 encoding
         cur.execute("DROP DATABASE IF EXISTS sparkifydb")
-        cur.execute("CREATE DATABASE sparkify WITH ENCODING 'utf8' TEMPLATE template0 ")
+        cur.execute("CREATE DATABASE sparkifydb WITH ENCODING 'utf8' TEMPLATE template0 ")
 
         # close connection to default database and reconnect to sparkify
         conn.close()
         conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=postgres password=postgres")
+        print(conn)
+
         cur = conn.cursor()
     except psycopg2.Error as e:
         print('Error: Issue creating the database')
@@ -45,12 +47,15 @@ def create_tables(cur, conn):
 
 
 def main():
-    cur, conn = create_database()
-    drop_tables(cur, conn)
-    create_tables(cur, conn)
-
-    conn.close()
+    try:
+        cur, conn = create_database()
+        drop_tables(cur, conn)
+        create_tables(cur, conn)
+    finally:
+        conn.close()
 
 
 if __name__ == "__main__":
     main()
+
+main()
