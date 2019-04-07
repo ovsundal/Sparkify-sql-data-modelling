@@ -16,8 +16,6 @@ def create_database():
         # close connection to default database and reconnect to sparkify
         conn.close()
         conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=postgres password=postgres")
-        print(conn)
-
         cur = conn.cursor()
     except psycopg2.Error as e:
         print('Error: Issue creating the database')
