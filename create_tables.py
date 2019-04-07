@@ -27,6 +27,18 @@ except psycopg2.Error as e:
     print("Error: Issue dropping table 'dim_users'")
     print(e)
 
+try:
+    cur.execute("DROP TABLE IF EXISTS dim_songs")
+except psycopg2.Error as e:
+    print("Error: Issue dropping table 'dim_songs'")
+    print(e)
+
+try:
+    cur.execute("DROP TABLE IF EXISTS dim_artists")
+except psycopg2.Error as e:
+    print("Error: Issue dropping table 'dim_songs'")
+    print(e)
+
 
 # create tables
 try:
@@ -61,7 +73,33 @@ except psycopg2.Error as e:
     print("Error: Issue creating table")
     print(e)
 
+try:
+    cur.execute("CREATE TABLE IF NOT EXISTS dim_songs "
+                "("
+                "song_id int PRIMARY KEY,"
+                "title varchar(255) NOT NULL,"
+                "artist_id int NOT NULL,"
+                "year smallint NOT NULL,"
+                "duration time NOT NULL"
+                ");"
+                "")
+except psycopg2.Error as e:
+    print("Error: Issue creating table 'dim_songs'")
+    print(e)
 
+try:
+    cur.execute("CREATE TABLE IF NOT EXISTS dim_artists "
+                "("
+                "artist_id int PRIMARY KEY,"
+                "name varchar(255),"
+                "location varchar(255),"
+                "latitude point,"
+                "longitude point"
+                ");"
+                "")
+except psycopg2.Error as e:
+    print("Error: Issue creating table 'dim_artists'")
+    print(e)
 
 
 cur.close()
