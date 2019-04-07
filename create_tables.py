@@ -110,7 +110,7 @@ except psycopg2.Error as e:
 try:
     cur.execute("CREATE TABLE IF NOT EXISTS dim_time "
                 "("
-                "start_time time,"
+                "start_time time PRIMARY KEY,"
                 "hour smallint NOT NULL,"
                 "day smallint NOT NULL,"
                 "month smallint NOT NULL,"
