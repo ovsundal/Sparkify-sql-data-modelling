@@ -39,6 +39,12 @@ except psycopg2.Error as e:
     print("Error: Issue dropping table 'dim_songs'")
     print(e)
 
+try:
+    cur.execute("DROP TABLE IF EXISTS dim_time")
+except psycopg2.Error as e:
+    print("Error: Issue dropping table 'dim_songs'")
+    print(e)
+
 
 # create tables
 try:
@@ -99,6 +105,21 @@ try:
                 "")
 except psycopg2.Error as e:
     print("Error: Issue creating table 'dim_artists'")
+    print(e)
+
+try:
+    cur.execute("CREATE TABLE IF NOT EXISTS dim_time "
+                "("
+                "start_time time,"
+                "hour smallint NOT NULL,"
+                "day smallint NOT NULL,"
+                "month smallint NOT NULL,"
+                "year smallint NOT NULL,"
+                "weekday varchar(255) NOT NULL"
+                ");"
+                "")
+except psycopg2.Error as e:
+    print("Error: Issue creating table 'dim_time'")
     print(e)
 
 
