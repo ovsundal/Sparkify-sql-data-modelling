@@ -34,11 +34,11 @@ level int NOT NULL
 dim_songs_table_create = """
 CREATE TABLE IF NOT EXISTS dim_songs
 (
-song_id int PRIMARY KEY,
+song_id varchar(255) PRIMARY KEY,
 title varchar(255) NOT NULL,
-artist_id int NOT NULL,
+artist_id varchar(255) NOT NULL,
 year smallint NOT NULL,
-duration time NOT NULL
+duration numeric NOT NULL
 );
 """
 
