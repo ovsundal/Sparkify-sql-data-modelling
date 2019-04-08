@@ -50,6 +50,15 @@ def create_tables(cur, conn):
         print(e)
 
 
+def insert_into_dim_songs_table(cur, conn, datalist):
+    try:
+        cur.execute(dim_songs_table_insert, datalist)
+        conn.commit()
+    except psycopg2.Error as e:
+        print('Error while inserting')
+        print(e)
+
+
 def main():
     try:
         create_database()
@@ -64,4 +73,4 @@ def main():
 if __name__ == "__main__":
     main()
 
-main()
+
