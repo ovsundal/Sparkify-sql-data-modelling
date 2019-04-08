@@ -1,27 +1,33 @@
 import psycopg2
-from sql_queries import drop_table_queries, create_table_queries
+from sql_queries import drop_table_queries, create_table_queries, dim_songs_table_insert
 
 
 def create_database():
     try:
-        # connect to default database
         conn = psycopg2.connect("host=127.0.0.1 dbname=postgres user=postgres password=postgres")
         conn.set_session(autocommit=True)
         cur = conn.cursor()
 
-        # create a fresh instance of sparkify database with UTF-8 encoding
+    # create a fresh instance of sparkify database with UTF-8 encoding
         cur.execute("DROP DATABASE IF EXISTS sparkifydb")
         cur.execute("CREATE DATABASE sparkifydb WITH ENCODING 'utf8' TEMPLATE template0 ")
-
-        # close connection to default database and reconnect to sparkify
+    except psycopg2.Error as e:
+        print('Error: Could not drop or create the database')
+        print(e)
+    finally:
         conn.close()
+
+
+def connect_to_database():
+    try:
         conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=postgres password=postgres")
         cur = conn.cursor()
+        conn.set_session(autocommit=True)
+
+        return cur, conn
     except psycopg2.Error as e:
         print('Error: Issue creating the database')
         print(e)
-
-    return cur, conn
 
 
 def drop_tables(cur, conn):
@@ -46,7 +52,9 @@ def create_tables(cur, conn):
 
 def main():
     try:
-        cur, conn = create_database()
+        create_database()
+        cur, conn = connect_to_database()
+
         drop_tables(cur, conn)
         create_tables(cur, conn)
     finally:
