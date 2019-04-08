@@ -67,6 +67,7 @@ weekday varchar(255) NOT NULL
 
 # INSERTS
 dim_songs_table_insert = "INSERT INTO dim_songs(song_id, title, artist_id, year, duration) VALUES(%s,%s,%s,%s,%s);"
+dim_artists_table_insert = "INSERT INTO dim_artists(artist_id, name, location, latitude, longitude) VALUES(%s,%s,%s,%s,%s);"
 
 
 # QUERY LISTS
