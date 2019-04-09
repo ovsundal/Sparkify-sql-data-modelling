@@ -1,5 +1,5 @@
 import psycopg2
-from sql_queries import drop_table_queries, create_table_queries, dim_songs_table_insert
+from sql_queries import drop_table_queries, create_table_queries, dim_songs_table_insert, dim_artists_table_insert
 
 
 def create_database():
@@ -53,6 +53,15 @@ def create_tables(cur, conn):
 def insert_into_dim_songs_table(cur, conn, datalist):
     try:
         cur.execute(dim_songs_table_insert, datalist)
+        conn.commit()
+    except psycopg2.Error as e:
+        print('Error while inserting')
+        print(e)
+
+
+def insert_into_dim_artists_table(cur, conn, datalist):
+    try:
+        cur.execute(dim_artists_table_insert, datalist)
         conn.commit()
     except psycopg2.Error as e:
         print('Error while inserting')
