@@ -56,9 +56,10 @@ longitude real NULL
 dim_time_table_create = """
 CREATE TABLE IF NOT EXISTS dim_time
 (
-start_time time PRIMARY KEY,
+start_time timestamp,
 hour smallint NOT NULL,
 day smallint NOT NULL,
+week smallint NOT NULL,
 month smallint NOT NULL,
 year smallint NOT NULL,
 weekday varchar(255) NOT NULL
@@ -66,8 +67,12 @@ weekday varchar(255) NOT NULL
 """
 
 # INSERTS
-dim_songs_table_insert = "INSERT INTO dim_songs(song_id, title, artist_id, year, duration) VALUES(%s,%s,%s,%s,%s);"
-dim_artists_table_insert = "INSERT INTO dim_artists(artist_id, name, location, latitude, longitude) VALUES(%s,%s,%s,%s,%s);"
+dim_songs_table_insert = "INSERT INTO dim_songs(song_id, title, artist_id, year, duration) " \
+                         "VALUES(%s,%s,%s,%s,%s);"
+dim_artists_table_insert = "INSERT INTO dim_artists(artist_id, name, location, latitude, longitude) " \
+                           "VALUES(%s,%s,%s,%s,%s);"
+dim_time_table_insert = "INSERT INTO dim_time(start_time, hour, day, week, month, year, weekday) " \
+                        "VALUES(%s,%s,%s,%s,%s,%s,%s);"
 
 
 # QUERY LISTS
