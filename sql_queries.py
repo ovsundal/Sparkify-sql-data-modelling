@@ -45,11 +45,11 @@ duration numeric NOT NULL
 dim_artists_table_create = """
 CREATE TABLE IF NOT EXISTS dim_artists
 (
-artist_id int PRIMARY KEY,
+artist_id varchar(255) NOT NULL,
 name varchar(255) NOT NULL,
 location varchar(255) NOT NULL,
-latitude point NOT NULL,
-longitude point NOT NULL
+latitude real NULL,
+longitude real NULL
 );
 """
 
