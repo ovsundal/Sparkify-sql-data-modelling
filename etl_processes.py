@@ -2,7 +2,8 @@ import os
 import glob
 import psycopg2
 import pandas as pd
-from create_tables import main, insert_into_dim_songs_table, insert_into_dim_artists_table, insert_into_dim_time_table
+from create_tables import main, insert_into_dim_songs_table, insert_into_dim_artists_table, \
+    insert_into_dim_time_table, insert_into_dim_user_table
 
 # create database and tables
 main()
@@ -67,6 +68,15 @@ def insert_into_dim_time():
             insert_into_dim_time_table(cur, conn, time_data)
 
 
+def insert_into_dim_users():
+    for log in log_data:
+        df = pd.DataFrame(pd.read_json(log, lines=True, typ='series'))
+        
+        for row in df[0]:
+            user_data = [row['artist'], row['firstName'], row['lastName'], row['gender'], row['level']]
+
+            insert_into_dim_user_table(cur, conn, user_data)
+
 # add song files
 filepath_song_files = 'data/song_data'
 song_files = get_files(filepath_song_files)
@@ -77,7 +87,7 @@ insert_into_dim_artists()
 filepath_log_files = 'data/log_data'
 log_data = get_files(filepath_log_files)
 insert_into_dim_time()
-
+insert_into_dim_users()
 
 
 cur.close()
