@@ -24,11 +24,11 @@ user_agent varchar(255)
 dim_user_table_create = """
 CREATE TABLE IF NOT EXISTS dim_users 
 (
-user_id int PRIMARY KEY,
-first_name varchar(255) NOT NULL,
-last_name varchar(255) NOT NULL,
+user_id varchar(255),
+first_name varchar(255),
+last_name varchar(255),
 gender char,
-level int NOT NULL
+level varchar(255) NOT NULL
 );"""
 
 dim_songs_table_create = """
@@ -73,7 +73,8 @@ dim_artists_table_insert = "INSERT INTO dim_artists(artist_id, name, location, l
                            "VALUES(%s,%s,%s,%s,%s);"
 dim_time_table_insert = "INSERT INTO dim_time(start_time, hour, day, week, month, year, weekday) " \
                         "VALUES(%s,%s,%s,%s,%s,%s,%s);"
-
+dim_users_table_insert = "INSERT INTO dim_users(user_id, first_name, last_name, gender, level)" \
+                         "VALUES(%s,%s,%s,%s,%s);"
 
 # QUERY LISTS
 drop_table_queries = [
