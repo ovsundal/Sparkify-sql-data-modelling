@@ -3,7 +3,8 @@ import glob
 import psycopg2
 import pandas as pd
 from create_tables import main, insert_into_dim_songs_table, insert_into_dim_artists_table, \
-    insert_into_dim_time_table, insert_into_dim_user_table
+    insert_into_dim_time_table, insert_into_dim_user_table, get_song_id, get_artist_id, insert_into_fact_songplays_table
+
 
 # create database and tables
 main()
@@ -73,9 +74,46 @@ def insert_into_dim_users():
         df = pd.DataFrame(pd.read_json(log, lines=True, typ='series'))
         
         for row in df[0]:
-            user_data = [row['artist'], row['firstName'], row['lastName'], row['gender'], row['level']]
+            user_data = [row['userId'], row['firstName'], row['lastName'], row['gender'], row['level']]
 
             insert_into_dim_user_table(cur, conn, user_data)
+
+
+def insert_into_fact_songplays():
+    """
+    Inserts data into the songplays table. Skips insert if song_id or artist_id is None
+    """
+    for log in log_data:
+        df = pd.DataFrame(pd.read_json(log, lines=True, typ='series'))
+
+        for row in df[0]:
+            # skip the row insert if None value is present
+            if row['song'] is None or row['length'] is None or row['artist'] is None:
+                continue
+
+            song_data = [row['song'], row['length']]
+            artist_data = [row['artist']]
+
+            # if no song id exists, skip row insert
+            song_id = get_song_id(cur, conn, song_data)
+
+            if song_id is None:
+                continue
+
+            artist_id = get_artist_id(cur, conn, artist_data)
+
+            # if no artist id exists, skip row insert
+            if artist_id is None:
+                continue
+
+            time_in_ms = row['ts']
+            timestamp = pd.to_datetime(time_in_ms, unit='ms')
+
+            fact_songplays_data = [timestamp, row['userId'], row['level'], song_id, artist_id,
+                                   row['sessionId'], row['location'], row['userAgent']]
+
+            insert_into_fact_songplays_table(cur, conn, fact_songplays_data)
+
 
 # add song files
 filepath_song_files = 'data/song_data'
@@ -88,6 +126,7 @@ filepath_log_files = 'data/log_data'
 log_data = get_files(filepath_log_files)
 insert_into_dim_time()
 insert_into_dim_users()
+insert_into_fact_songplays()
 
 
 cur.close()
