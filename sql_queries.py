@@ -76,6 +76,13 @@ dim_time_table_insert = "INSERT INTO dim_time(start_time, hour, day, week, month
 dim_users_table_insert = "INSERT INTO dim_users(user_id, first_name, last_name, gender, level)" \
                          "VALUES(%s,%s,%s,%s,%s);"
 
+# SELECT QUERIES
+select_dim_songs_song_id = "SELECT song_id FROM dim_songs WHERE dim_songs.title = title AND dim_songs.duration = duration" \
+                          "VALUES(%s,%s)"
+
+select_dim_artist_artist_id = "SELECT DISTINCT artist_id FROM dim_artists WHERE dim_artists.name = name" \
+                          "VALUES(%s)"
+
 # QUERY LISTS
 drop_table_queries = [
     fact_songplay_table_drop,
