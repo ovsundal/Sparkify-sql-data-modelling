@@ -6,6 +6,9 @@ from sql_queries import \
 
 
 def create_database():
+    """
+    connects to postgres default database, and drops (if exists) the sparkifydb and recreates it
+    """
     try:
         conn = psycopg2.connect("host=127.0.0.1 dbname=postgres user=postgres password=postgres")
         conn.set_session(autocommit=True)
@@ -123,6 +126,9 @@ def get_artist_id(cur, conn, datalist):
 
 
 def main():
+    """
+    Creates a clean instance of the sparkifydb with empty tables
+    """
     try:
         create_database()
         cur, conn = connect_to_database()
