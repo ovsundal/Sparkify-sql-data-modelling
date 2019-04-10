@@ -9,6 +9,9 @@ from create_tables import main, insert_into_dim_songs_table, insert_into_dim_art
 
 
 def get_files(filepath):
+    """
+    Extracts all files from the data source
+    """
     all_files = []
     for root, dirs, files in os.walk(filepath):
         files = glob.glob(os.path.join(root, '*.json'))
@@ -18,25 +21,46 @@ def get_files(filepath):
 
 
 def insert_into_dim_songs():
+    """
+    Loads the dim_songs table with data. Skips all None entries
+    """
     for song in song_files:
         df = pd.DataFrame(pd.read_json(song, typ='series'))
         song_table_data = df[0][['song_id', 'title', 'artist_id', 'year', 'duration']].values.tolist()
+
+        if None in song_table_data:
+            continue
+
         insert_into_dim_songs_table(cur, conn, song_table_data)
 
 
 def insert_into_dim_artists():
+    """
+    Loads the dim_artists table with data. Skips all None entries
+    """
     for artist in song_files:
         df = pd.DataFrame(pd.read_json(artist, typ='series'))
         artist_table_data = df[0][['artist_id', 'artist_name', 'artist_location', 'artist_latitude', 'artist_longitude']].values.tolist()
+
+        if None in artist_table_data:
+            continue
+
         insert_into_dim_artists_table(cur, conn, artist_table_data)
 
 
 def insert_into_dim_time():
+    """
+    Loads the dim_time table with data. Skips all None entries
+    """
     for log in log_data:
         df = pd.DataFrame(pd.read_json(log, lines=True, typ='series'))
 
         for row in df[0]:
             time_in_ms = row['ts']
+
+            if time_in_ms is None:
+                continue
+
             timestamp = pd.to_datetime(time_in_ms, unit='ms')
 
             # convert timestamp to all required time units
@@ -53,18 +77,24 @@ def insert_into_dim_time():
 
 
 def insert_into_dim_users():
+    """
+    Loads the dim_users table with data. Skips all None entries
+    """
     for log in log_data:
         df = pd.DataFrame(pd.read_json(log, lines=True, typ='series'))
-        
+
         for row in df[0]:
             user_data = [row['userId'], row['firstName'], row['lastName'], row['gender'], row['level']]
+
+            if None in user_data:
+                continue
 
             insert_into_dim_user_table(cur, conn, user_data)
 
 
 def insert_into_fact_songplays():
     """
-    Inserts data into the songplays table. Skips insert if song_id or artist_id is None
+    Loads the fact_songplays table with data. Skips all None entries
     """
     for log in log_data:
         df = pd.DataFrame(pd.read_json(log, lines=True, typ='series'))
@@ -129,5 +159,6 @@ insert_into_dim_time()
 insert_into_dim_users()
 insert_into_fact_songplays()
 
+# close connection
 cur.close()
 conn.close()

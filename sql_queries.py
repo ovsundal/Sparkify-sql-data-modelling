@@ -80,7 +80,6 @@ select_dim_songs_song_id = "SELECT song_id FROM dim_songs WHERE dim_songs.title 
 select_dim_artist_artist_id = "SELECT DISTINCT artist_id FROM dim_artists WHERE dim_artists.name = %s;" \
 
 
-
 # QUERY LISTS
 drop_table_queries = [
     fact_songplay_table_drop,
@@ -89,7 +88,6 @@ drop_table_queries = [
     dim_artists_table_drop,
     dim_time_table_drop
 ]
-
 create_table_queries = [
     fact_songplay_table_create,
     dim_user_table_create,
