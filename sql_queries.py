@@ -23,7 +23,7 @@ user_agent varchar(255)
 dim_user_table_create = """
 CREATE TABLE IF NOT EXISTS dim_users 
 (
-user_id varchar(255),
+user_id varchar(255) PRIMARY KEY,
 first_name varchar(255),
 last_name varchar(255),
 gender char,
