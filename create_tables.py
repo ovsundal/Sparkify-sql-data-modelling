@@ -1,7 +1,8 @@
 import psycopg2
 from sql_queries import \
     drop_table_queries, create_table_queries, dim_songs_table_insert, dim_artists_table_insert, \
-    dim_time_table_insert, dim_users_table_insert, select_dim_songs_song_id, select_dim_artist_artist_id, fact_songplays_table_insert
+    dim_time_table_insert, dim_users_table_insert, select_dim_songs_song_id, select_dim_artist_artist_id, \
+    fact_songplays_table_insert
 
 
 def create_database():
@@ -123,7 +124,7 @@ def get_artist_id(cur, conn, datalist):
 
 def main():
     try:
-        # create_database()
+        create_database()
         cur, conn = connect_to_database()
 
         drop_tables(cur, conn)

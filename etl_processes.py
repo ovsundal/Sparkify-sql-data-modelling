@@ -1,28 +1,11 @@
-import os
 import glob
-import psycopg2
+import os
+
 import pandas as pd
+import psycopg2
+
 from create_tables import main, insert_into_dim_songs_table, insert_into_dim_artists_table, \
     insert_into_dim_time_table, insert_into_dim_user_table, get_song_id, get_artist_id, insert_into_fact_songplays_table
-
-
-# create database and tables
-main()
-
-# create connection to db
-try:
-    conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=postgres password=postgres")
-except psycopg2.Error as e:
-    print("Error: Could not make connection to the Postgres database")
-    print(e)
-
-try:
-    cur = conn.cursor()
-except psycopg2.Error as e:
-    print("Error: Could not get cursor to the Database")
-    print(e)
-
-conn.set_session(autocommit=True)
 
 
 def get_files(filepath):
@@ -115,19 +98,36 @@ def insert_into_fact_songplays():
             insert_into_fact_songplays_table(cur, conn, fact_songplays_data)
 
 
-# add song files
+# create database and tables
+main()
+
+# create connection to db
+try:
+    conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=postgres password=postgres")
+except psycopg2.Error as e:
+    print("Error: Could not make connection to the Postgres database")
+    print(e)
+
+try:
+    cur = conn.cursor()
+except psycopg2.Error as e:
+    print("Error: Could not get cursor to the Database")
+    print(e)
+
+conn.set_session(autocommit=True)
+
+# insert song files
 filepath_song_files = 'data/song_data'
 song_files = get_files(filepath_song_files)
 insert_into_dim_songs()
 insert_into_dim_artists()
 
-# add log files
+# insert log files
 filepath_log_files = 'data/log_data'
 log_data = get_files(filepath_log_files)
 insert_into_dim_time()
 insert_into_dim_users()
 insert_into_fact_songplays()
-
 
 cur.close()
 conn.close()

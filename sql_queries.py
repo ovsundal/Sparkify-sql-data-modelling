@@ -20,7 +20,6 @@ location varchar(255),
 user_agent varchar(255)
 );
 """
-
 dim_user_table_create = """
 CREATE TABLE IF NOT EXISTS dim_users 
 (
@@ -30,7 +29,6 @@ last_name varchar(255),
 gender char,
 level varchar(255) NOT NULL
 );"""
-
 dim_songs_table_create = """
 CREATE TABLE IF NOT EXISTS dim_songs
 (
@@ -41,7 +39,6 @@ year smallint NOT NULL,
 duration numeric NOT NULL
 );
 """
-
 dim_artists_table_create = """
 CREATE TABLE IF NOT EXISTS dim_artists
 (
@@ -52,7 +49,6 @@ latitude real NULL,
 longitude real NULL
 );
 """
-
 dim_time_table_create = """
 CREATE TABLE IF NOT EXISTS dim_time
 (
@@ -81,7 +77,6 @@ fact_songplays_table_insert = "INSERT INTO fact_songplays(start_time, user_id, l
 
 # SELECT QUERIES
 select_dim_songs_song_id = "SELECT song_id FROM dim_songs WHERE dim_songs.title = %s AND dim_songs.duration = %s;"
-
 select_dim_artist_artist_id = "SELECT DISTINCT artist_id FROM dim_artists WHERE dim_artists.name = %s;" \
 
 
