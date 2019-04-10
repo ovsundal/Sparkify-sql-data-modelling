@@ -9,12 +9,12 @@ dim_time_table_drop = "DROP TABLE IF EXISTS dim_time"
 fact_songplay_table_create = """
 CREATE TABLE IF NOT EXISTS fact_songplays
 (
-songplay_id int PRIMARY KEY,
+songplay_id serial PRIMARY KEY,
 start_time time NOT NULL,
 user_id int NOT NULL,
-level int NOT NULL,
-song_id int NOT NULL,
-artist_id int NOT NULL,
+level varchar(255) NOT NULL,
+song_id varchar(255) NOT NULL,
+artist_id varchar(255) NOT NULL,
 session_id int NOT NULL,
 location varchar(255),
 user_agent varchar(255)
@@ -75,16 +75,16 @@ dim_time_table_insert = "INSERT INTO dim_time(start_time, hour, day, week, month
                         "VALUES(%s,%s,%s,%s,%s,%s,%s);"
 dim_users_table_insert = "INSERT INTO dim_users(user_id, first_name, last_name, gender, level)" \
                          "VALUES(%s,%s,%s,%s,%s);"
-fact_songplays_table_insert = "INSERT INTO fact_songplays(songplay_id, start_time, user_id, level, song_id, artist_id, " \
+fact_songplays_table_insert = "INSERT INTO fact_songplays(start_time, user_id, level, song_id, artist_id, " \
                               "session_id, location, user_agent)" \
-                         "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+                         "VALUES(%s,%s,%s,%s,%s,%s,%s,%s);"
 
 # SELECT QUERIES
-select_dim_songs_song_id = "SELECT song_id FROM dim_songs WHERE dim_songs.title = title AND dim_songs.duration = duration " \
-                          "VALUES(%s,%s)"
+select_dim_songs_song_id = "SELECT song_id FROM dim_songs WHERE dim_songs.title = %s AND dim_songs.duration = %s;"
 
-select_dim_artist_artist_id = "SELECT DISTINCT artist_id FROM dim_artists WHERE dim_artists.name = name;" \
-                          "VALUES(%s)"
+select_dim_artist_artist_id = "SELECT DISTINCT artist_id FROM dim_artists WHERE dim_artists.name = %s;" \
+
+
 
 # QUERY LISTS
 drop_table_queries = [
