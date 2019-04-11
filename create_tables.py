@@ -137,6 +137,7 @@ def main():
         create_tables(cur, conn)
     finally:
         conn.close()
+        cur.close()
 
 
 # create database and tables
