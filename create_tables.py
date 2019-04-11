@@ -10,7 +10,7 @@ def create_database():
     connects to postgres default database, and drops (if exists) the sparkifydb and recreates it
     """
     try:
-        conn = psycopg2.connect("host=127.0.0.1 dbname=postgres user=postgres password=postgres")
+        conn = psycopg2.connect("host=127.0.0.1 dbname=studentdb user=student password=student")
         conn.set_session(autocommit=True)
         cur = conn.cursor()
 
@@ -22,18 +22,6 @@ def create_database():
         print(e)
     finally:
         conn.close()
-
-
-def connect_to_database():
-    try:
-        conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=postgres password=postgres")
-        cur = conn.cursor()
-        conn.set_session(autocommit=True)
-
-        return cur, conn
-    except psycopg2.Error as e:
-        print('Error: Issue creating the database')
-        print(e)
 
 
 def drop_tables(cur, conn):
@@ -129,13 +117,24 @@ def main():
     """
     Creates a clean instance of the sparkifydb with empty tables
     """
+    # connect to the default database and create a new instance of the sparkifydb
+    create_database()
+
+    # connect to sparkifydb and drop & create all tables
     try:
-        create_database()
-        cur, conn = connect_to_database()
+        conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
+        conn.set_session(autocommit=True)
+        cur = conn.cursor()
 
         drop_tables(cur, conn)
         create_tables(cur, conn)
+    except psycopg2.Error as e:
+        print('Error during ETL pipeline')
+        print(e)
+
     finally:
         conn.close()
+        cur.close()
 
 
+main()

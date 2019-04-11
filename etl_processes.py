@@ -20,7 +20,7 @@ def get_files(filepath):
     return all_files
 
 
-def insert_into_dim_songs():
+def insert_into_dim_songs(cur, conn, song_files):
     """
     Loads the dim_songs table with data. Skips all None entries
     """
@@ -34,7 +34,7 @@ def insert_into_dim_songs():
         insert_into_dim_songs_table(cur, conn, song_table_data)
 
 
-def insert_into_dim_artists():
+def insert_into_dim_artists(cur, conn, song_files):
     """
     Loads the dim_artists table with data. Skips all None entries
     """
@@ -48,7 +48,7 @@ def insert_into_dim_artists():
         insert_into_dim_artists_table(cur, conn, artist_table_data)
 
 
-def insert_into_dim_time():
+def insert_into_dim_time(cur, conn, log_data):
     """
     Loads the dim_time table with data. Skips all None entries
     """
@@ -76,7 +76,7 @@ def insert_into_dim_time():
             insert_into_dim_time_table(cur, conn, time_data)
 
 
-def insert_into_dim_users():
+def insert_into_dim_users(cur, conn, log_data):
     """
     Loads the dim_users table with data. Skips all None entries
     """
@@ -92,7 +92,7 @@ def insert_into_dim_users():
             insert_into_dim_user_table(cur, conn, user_data)
 
 
-def insert_into_fact_songplays():
+def insert_into_fact_songplays(cur, conn, log_data):
     """
     Loads the fact_songplays table with data. Skips all None entries
     """
@@ -128,12 +128,9 @@ def insert_into_fact_songplays():
             insert_into_fact_songplays_table(cur, conn, fact_songplays_data)
 
 
-# create database and tables
-main()
-
 # create connection to db
 try:
-    conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=postgres password=postgres")
+    conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
 except psycopg2.Error as e:
     print("Error: Could not make connection to the Postgres database")
     print(e)
@@ -149,15 +146,15 @@ conn.set_session(autocommit=True)
 # insert song files
 filepath_song_files = 'data/song_data'
 song_files = get_files(filepath_song_files)
-insert_into_dim_songs()
-insert_into_dim_artists()
+insert_into_dim_songs(cur, conn, song_files)
+insert_into_dim_artists(cur, conn, song_files)
 
 # insert log files
 filepath_log_files = 'data/log_data'
 log_data = get_files(filepath_log_files)
-insert_into_dim_time()
-insert_into_dim_users()
-insert_into_fact_songplays()
+insert_into_dim_time(cur, conn, log_data)
+insert_into_dim_users(cur, conn, log_data)
+insert_into_fact_songplays(cur, conn, log_data)
 
 # close connection
 cur.close()
