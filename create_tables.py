@@ -139,3 +139,7 @@ def main():
         conn.close()
 
 
+# create database and tables
+main()
+
+

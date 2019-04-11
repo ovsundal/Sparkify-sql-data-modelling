@@ -128,8 +128,7 @@ def insert_into_fact_songplays():
             insert_into_fact_songplays_table(cur, conn, fact_songplays_data)
 
 
-# create database and tables
-main()
+
 
 # create connection to db
 try:
