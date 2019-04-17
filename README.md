@@ -5,9 +5,9 @@ music and artist records are created. Data is then transformed and cleansed, bef
 the database.
 
 #### Prerequisites for running the program
-Prerequisites for running the project is python 3.0 and postgres with the default database available
+Prerequisites for running the project is python 3.x and postgres with a default database named "studentdb" available.
 
 #### Starting the program
 1. Execute "create_tables.py". This will create a fresh instance of the sparkifydb with empty tables.
-2. Execute "etl_processes.py". This will load the data into the tables
+2. Execute "etl.py". This will load the data into the tables
 
