@@ -108,7 +108,7 @@ VALUES(%s,%s,%s,%s,%s,%s,%s);
 song_select = ("""
 SELECT s.song_id, a.artist_id FROM songs AS s
 LEFT OUTER JOIN artists AS a ON s.artist_id = a.artist_id
-WHERE s.duration = %s AND s.title = %s AND a.name = %s;
+WHERE s.title = %s AND a.name = %s AND s.duration = %s;
 """)
 
 
